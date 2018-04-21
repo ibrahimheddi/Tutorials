@@ -28,6 +28,9 @@
         
 
         
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
 
         <!-- Fetch Clipboard.js from CDN but have a local fallback -->
         <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
@@ -147,7 +150,114 @@
 
                 <div id="content" class="content">
                     <main>
-                        
+                        <a class="header" href="mechanical/mecanum.html#mecanum-wheels" id="mecanum-wheels"><h1>Mecanum wheels</h1></a>
+<p><img src="../img/mechanical/mecanum/mecanum.jpg" alt="Image of Mecanum Wheel" /></p>
+<p>A mecanum wheel is a wheel with rollers attached at its circumference at an angle of typically 45°.
+When four mecanum wheels are used together, we can achieve a net resulting direction in <strong>any</strong> direction by varying the direction and speed of rotation of the wheels.</p>
+<a class="header" href="mechanical/mecanum.html#assembly" id="assembly"><h2>Assembly</h2></a>
+<a class="header" href="mechanical/mecanum.html#wheel-adapter" id="wheel-adapter"><h3>Wheel adapter;</h3></a>
+<p>To mount the wheels onto the motors, we need to use an adapter.
+Due to an error in our order, we didn't receive the correct adapters and the ones we received didn't fit on the wheels.</p>
+<p>We decided to 3D print our own as a replacement. The <a href="">STL file for this part can be found here</a>.</p>
+<blockquote>
+<p><strong>Note:</strong><br />
+3D printing parts that will be under moderate or heavy mechanical stress is often not the best idea, because those parts will tend to break and/or wear out quickly.</p>
+</blockquote>
+<a class="header" href="mechanical/mecanum.html#wheel-orientation" id="wheel-orientation"><h3>Wheel orientation</h3></a>
+<p>When assembling the wheels onto the robot, we need to pay attention to their orientation.
+If we look from the top view, the rollers should all point to the center of the base.</p>
+<p><img src="../img/mechanical/mecanum/mecanum-orientation.png" alt="" /></p>
+<a class="header" href="mechanical/mecanum.html#kinematics" id="kinematics"><h2>Kinematics</h2></a>
+<p><strong>Forward kinematics</strong> refers to the use of the kinematic equations of a robot to compute the position of the end-effector from specified values for the joint parameters. In our case, the forward kinematics allow us to compute the global velocity of the robots base when given the angular velocities of the individual wheels.</p>
+<p>The reverse process that computes the joint parameters that achieve a specified position of the end-effector is known as <strong>inverse kinematics</strong>. The inverse kinematic equations allow us, in our case, to compute the individual wheel velocities needed to achieve a given base velocity.</p>
+<p>The equations presented in the next sections come from the following research paper: <a href="https://research.ijcaonline.org/volume113/number3/pxc3901586.pdf">&quot;Kinematic Model of a Four Mecanum Wheeled Mobile Robot&quot;</a></p>
+<a class="header" href="mechanical/mecanum.html#inverse-kinematics" id="inverse-kinematics"><h3>Inverse kinematics</h3></a>
+<p>The inverse kinematic equations allow us to compute the indiviual wheel velocities when we want to achieve an overall base velocity.</p>
+<ul>
+<li>\(\omega_{fl}\), \(\omega_{fr}\), \(\omega_{rl}\) and \(\omega_{rr}\)  represent the <em>angular velocities</em> for the front left, front right, rear left and rear right wheel respectively.</li>
+<li>\(v_x\) and \(v_y\) represent the robot's base linear velocity in the x and y direction respectively. The x direction is in front of the robot.</li>
+<li>\(\omega_z\) is angular velocity of the robot's base around the z-axis.</li>
+<li>\(l_x\) and \(l_y\) represent the distance from the robot's center to the wheels projected on the x and y axis respectively.</li>
+</ul>
+<!-- MathJax math equation -->
+\[
+    \left\{\begin{matrix}
+    \omega_{fl} &= \frac{1}{r} \left[v_x - v_y - (l_x + l_y)\omega_z \right ] \\ 
+    \omega_{fr} &= \frac{1}{r} \left[v_x + v_y + (l_x + l_y)\omega_z \right ] \\ 
+    \omega_{rl} &= \frac{1}{r} \left[v_x + v_y - (l_x + l_y)\omega_z \right ] \\ 
+    \omega_{rr} &= \frac{1}{r} \left[v_x - v_y + (l_x + l_y)\omega_z \right ] 
+    \end{matrix}\right.
+\]
+<p>Or in matrix form:</p>
+<!-- MathJax math equation -->
+\[
+    \begin{bmatrix}
+    \omega_{fl} \\ 
+    \omega_{fr}\\ 
+    \omega_{rl}\\ 
+    \omega_{rr}
+    \end{bmatrix}
+    =
+    \frac{1}{r}
+    \begin{bmatrix}
+    1 & -1 & -(l_x + l_y) \\ 
+    1 &  1 &  (l_x + l_y) \\ 
+    1 &  1 & -(l_x + l_y) \\ 
+    1 & -1 &  (l_x + l_y)
+    \end{bmatrix}
+    \begin{bmatrix}
+    v_x\\ 
+    v_y\\ 
+    \omega_z
+    \end{bmatrix}
+\]
+<a class="header" href="mechanical/mecanum.html#example" id="example"><h4>Example</h4></a>
+<p>If we want to let the robot move diagonally at <code>0.22 m/s</code> in the x direction and <code>0.11 m/s</code> in the y direction. At what speed should we set the motors of each wheel?</p>
+<p>The robot is 15 cm in width and 20 cm in length. The wheels are placed at the extremities and have a diameter of 60 mm.</p>
+<hr />
+<!-- MathJax math equation -->
+\[
+    \left\{\begin{matrix}
+    \omega_{fl} &= \frac{1}{0.03} \left[0.22 - 0.11 - (0.2 + 0.15) \cdot 0 \right ] = 3.66 \; rad / s\\ 
+    \omega_{fr} &= \frac{1}{0.03} \left[0.22 + 0.11 + (0.2 + 0.15) \cdot 0 \right ] = 11 \; rad / s \\ 
+    \omega_{rl} &= \frac{1}{0.03} \left[0.22 + 0.11 - (0.2 + 0.15) \cdot 0 \right ] = 11 \; rad/s \\ 
+    \omega_{rr} &= \frac{1}{0.03} \left[0.22 - 0.11 + (0.2 + 0.15) \cdot 0 \right ] =  3.66 \; rad/s
+    \end{matrix}\right.
+\]
+<hr />
+<a class="header" href="mechanical/mecanum.html#forward-kinematics" id="forward-kinematics"><h3>Forward kinematics</h3></a>
+<p>The forward kinematic equations allow us to compute the robot's base velocity when given the individual wheel velocities. This is usefull to compute the robot's odometry using the motor's embedded quadrature encoders.</p>
+<p><em>Odometry is the use of sensor data to estimate the change in position of the robot over time.</em></p>
+<!-- MathJax math equation -->
+\[
+    \left\{\begin{matrix}
+    v_x & = (\omega_{fl} + \omega_{fr} + \omega_{rl} + \omega_{rr}) \cdot \frac{r}{4}\\ 
+    v_y & = (-\omega_{fl} + \omega_{fr} + \omega_{rl} - \omega_{rr}) \cdot \frac{r}{4}\\ 
+    \omega_z & = (-\omega_{fl} + \omega_{fr} - \omega_{rl} + \omega_{rr}) \cdot \frac{r}{4(l_x + l_y)}
+    \end{matrix}\right.
+\]
+<p>Or in matrix form:</p>
+<!-- MathJax math equation -->
+\[
+    \begin{bmatrix}
+    v_x\\ 
+    v_y\\ 
+    \omega_z
+    \end{bmatrix}
+    =
+    \frac{r}{4}
+    \begin{bmatrix}
+    1 & 1 & 1 & 1\\ 
+    -1 & 1 & 1 & -1\\ 
+    -\frac{1}{(l_x+l_y)} & \frac{1}{(l_x+l_y)} & -\frac{1}{(l_x+l_y)}  & \frac{1}{(l_x+l_y)} 
+    \end{bmatrix}
+    \begin{bmatrix}
+    \omega_{fl}\\ 
+    \omega_{fr}\\ 
+    \omega_{rl}\\ 
+    \omega_{rr}
+    \end{bmatrix}
+\]
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
