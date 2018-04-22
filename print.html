@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible">
+<html lang="en" class="sidebar-visible no-js">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -18,35 +18,19 @@
         <link rel="shortcut icon" href="favicon.png">
 
         <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="_FontAwesome/css/font-awesome.css">
 
         <link rel="stylesheet" href="highlight.css">
         <link rel="stylesheet" href="tomorrow-night.css">
         <link rel="stylesheet" href="ayu-highlight.css">
 
-        <!-- Custom theme -->
+        <!-- Custom theme stylesheets -->
         
 
         
         <!-- MathJax -->
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         
-
-        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
-        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
-        <script>
-            if (typeof Clipboard == 'undefined') {
-                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
-            }
-        </script>
-
-        <noscript>
-            <style type="text/css">
-                .javascript-only {
-                    display: none;
-                }
-            </style>
-        </noscript>
 
     </head>
     <body class="light">
@@ -72,7 +56,7 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
             if (theme === null || theme === undefined) { theme = 'light'; }
             document.body.className = theme;
-            document.querySelector('html').className = theme;
+            document.querySelector('html').className = theme + ' js';
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
@@ -88,7 +72,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li class="affix"><a href="introduction.html">Introduction</a></li><li><a href="mechanical/mechanical.html"><strong aria-hidden="true">1.</strong> Mechanical</a></li><li><ol class="section"><li><a href="mechanical/fusion.html"><strong aria-hidden="true">1.1.</strong> 3D modeling with Fusion360</a></li><li><a href="mechanical/3d-print.html"><strong aria-hidden="true">1.2.</strong> 3D printing</a></li><li><a href="mechanical/mecanum.html"><strong aria-hidden="true">1.3.</strong> Mecanum wheels</a></li><li><a href="mechanical/2018/lift.html"><strong aria-hidden="true">1.4.</strong> 2018 specifics</a></li><li><ol class="section"><li><a href="mechanical/2018/lift.html"><strong aria-hidden="true">1.4.1.</strong> Lift</a></li><li><a href="mechanical/2018/balls.html"><strong aria-hidden="true">1.4.2.</strong> Ball mechanism</a></li></ol></li></ol></li><li><a href="electronics/electronics.html"><strong aria-hidden="true">2.</strong> Electronics</a></li><li><ol class="section"><li><a href="electronics/actuators/actuators.html"><strong aria-hidden="true">2.1.</strong> Actuators</a></li><li><ol class="section"><li><a href="electronics/actuators/dynamixels.html"><strong aria-hidden="true">2.1.1.</strong> Dynamixels</a></li></ol></li><li><a href="electronics/sensors/sensors.html"><strong aria-hidden="true">2.2.</strong> Sensors</a></li><li><ol class="section"><li><a href="electronics/sensors/sonar.html"><strong aria-hidden="true">2.2.1.</strong> Sonar</a></li></ol></li><li><a href="electronics/pcb.html"><strong aria-hidden="true">2.3.</strong> PCB Design</a></li><li><a href="electronics/fpga.html"><strong aria-hidden="true">2.4.</strong> FPGA</a></li><li><a href="electronics/communication/communication.html"><strong aria-hidden="true">2.5.</strong> Communication</a></li><li><ol class="section"><li><a href="electronics/communication/i2c.html"><strong aria-hidden="true">2.5.1.</strong> I2C</a></li><li><a href="electronics/communication/spi.html"><strong aria-hidden="true">2.5.2.</strong> SPI</a></li><li><a href="electronics/communication/can.html"><strong aria-hidden="true">2.5.3.</strong> CAN</a></li></ol></li></ol></li><li><a href="software/software.html"><strong aria-hidden="true">3.</strong> Software</a></li><li><ol class="section"><li><a href="software/ros/ros.html"><strong aria-hidden="true">3.1.</strong> ROS</a></li><li><ol class="section"><li><a href="software/ros/install.html"><strong aria-hidden="true">3.1.1.</strong> Install</a></li><li><a href="software/ros/basics/basics.html"><strong aria-hidden="true">3.1.2.</strong> Basic concepts</a></li><li><ol class="section"><li><a href="software/ros/basics/workspace.html"><strong aria-hidden="true">3.1.2.1.</strong> Workspace setup</a></li><li><a href="software/ros/basics/sub.html"><strong aria-hidden="true">3.1.2.2.</strong> Subscriber</a></li><li><a href="software/ros/basics/pub.html"><strong aria-hidden="true">3.1.2.3.</strong> Publisher</a></li><li><a href="software/ros/basics/launch.html"><strong aria-hidden="true">3.1.2.4.</strong> Launchfiles</a></li><li><a href="software/ros/basics/params.html"><strong aria-hidden="true">3.1.2.5.</strong> ROS parameters</a></li></ol></li><li><a href="software/ros/advanced/advanced.html"><strong aria-hidden="true">3.1.3.</strong> Advanced concepts</a></li><li><ol class="section"><li><a href="software/ros/advanced/custom-msgs.html"><strong aria-hidden="true">3.1.3.1.</strong> Custom messages</a></li><li><a href="software/ros/advanced/model.html"><strong aria-hidden="true">3.1.3.2.</strong> Robot model</a></li><li><a href="software/ros/advanced/rviz.html"><strong aria-hidden="true">3.1.3.3.</strong> Rviz</a></li></ol></li><li><a href="software/ros/rosserial.html"><strong aria-hidden="true">3.1.4.</strong> ROS and Arduino</a></li><li><a href="software/ros/packages/packages.html"><strong aria-hidden="true">3.1.5.</strong> Useful packages</a></li><li><ol class="section"><li><a href="software/ros/packages/map.html"><strong aria-hidden="true">3.1.5.1.</strong> Map Server</a></li><li><a href="software/ros/packages/nav.html"><strong aria-hidden="true">3.1.5.2.</strong> Navigation stack</a></li></ol></li></ol></li><li><a href="software/image-processing.html"><strong aria-hidden="true">3.2.</strong> Image processing</a></li></ol></li></ol>
+            <ol class="chapter"><li class="affix"><a href="introduction.html">Introduction</a></li><li><a href="mechanical/mechanical.html"><strong aria-hidden="true">1.</strong> Mechanical</a></li><li><ol class="section"><li><a href="mechanical/fusion.html"><strong aria-hidden="true">1.1.</strong> 3D modeling with Fusion360</a></li><li><a href="mechanical/3d-print.html"><strong aria-hidden="true">1.2.</strong> 3D printing</a></li><li><a href="mechanical/mecanum.html"><strong aria-hidden="true">1.3.</strong> Mecanum wheels</a></li><li><a href="mechanical/2018/lift.html"><strong aria-hidden="true">1.4.</strong> 2018 specifics</a></li><li><ol class="section"><li><a href="mechanical/2018/lift.html"><strong aria-hidden="true">1.4.1.</strong> Lift</a></li><li><a href="mechanical/2018/balls.html"><strong aria-hidden="true">1.4.2.</strong> Ball mechanism</a></li></ol></li></ol></li><li><a href="electronics/electronics.html"><strong aria-hidden="true">2.</strong> Electronics</a></li><li><ol class="section"><li><a href="electronics/actuators/actuators.html"><strong aria-hidden="true">2.1.</strong> Actuators</a></li><li><ol class="section"><li><a href="electronics/actuators/dynamixels.html"><strong aria-hidden="true">2.1.1.</strong> Dynamixels</a></li></ol></li><li><a href="electronics/sensors/sensors.html"><strong aria-hidden="true">2.2.</strong> Sensors</a></li><li><ol class="section"><li><a href="electronics/sensors/sonar.html"><strong aria-hidden="true">2.2.1.</strong> Sonar</a></li></ol></li><li><a href="electronics/pcb.html"><strong aria-hidden="true">2.3.</strong> PCB Design</a></li><li><a href="electronics/fpga.html"><strong aria-hidden="true">2.4.</strong> FPGA</a></li><li><a href="electronics/communication/communication.html"><strong aria-hidden="true">2.5.</strong> Communication</a></li><li><ol class="section"><li><a href="electronics/communication/i2c.html"><strong aria-hidden="true">2.5.1.</strong> I2C</a></li><li><a href="electronics/communication/spi.html"><strong aria-hidden="true">2.5.2.</strong> SPI</a></li><li><a href="electronics/communication/can.html"><strong aria-hidden="true">2.5.3.</strong> CAN</a></li></ol></li></ol></li><li><a href="software/software.html"><strong aria-hidden="true">3.</strong> Software</a></li><li><ol class="section"><li><a href="software/ros/ros.html"><strong aria-hidden="true">3.1.</strong> ROS</a></li><li><ol class="section"><li><a href="software/ros/install.html"><strong aria-hidden="true">3.1.1.</strong> Install</a></li><li><a href="software/ros/basics/basics.html"><strong aria-hidden="true">3.1.2.</strong> Basic concepts</a></li><li><ol class="section"><li><a href="software/ros/basics/workspace.html"><strong aria-hidden="true">3.1.2.1.</strong> Workspace setup</a></li><li><a href="software/ros/basics/packages.html"><strong aria-hidden="true">3.1.2.2.</strong> Packages</a></li><li><a href="software/ros/basics/pub.html"><strong aria-hidden="true">3.1.2.3.</strong> Publisher</a></li><li><a href="software/ros/basics/sub.html"><strong aria-hidden="true">3.1.2.4.</strong> Subscriber</a></li><li><a href="software/ros/basics/launch.html"><strong aria-hidden="true">3.1.2.5.</strong> Launchfiles</a></li><li><a href="software/ros/basics/params.html"><strong aria-hidden="true">3.1.2.6.</strong> ROS parameters</a></li></ol></li><li><a href="software/ros/advanced/advanced.html"><strong aria-hidden="true">3.1.3.</strong> Advanced concepts</a></li><li><ol class="section"><li><a href="software/ros/advanced/custom-msgs.html"><strong aria-hidden="true">3.1.3.1.</strong> Custom messages</a></li><li><a href="software/ros/advanced/model.html"><strong aria-hidden="true">3.1.3.2.</strong> Robot model</a></li><li><a href="software/ros/advanced/rviz.html"><strong aria-hidden="true">3.1.3.3.</strong> Rviz</a></li></ol></li><li><a href="software/ros/rosserial.html"><strong aria-hidden="true">3.1.4.</strong> ROS and Arduino</a></li><li><a href="software/ros/packages/packages.html"><strong aria-hidden="true">3.1.5.</strong> Useful packages</a></li><li><ol class="section"><li><a href="software/ros/packages/map.html"><strong aria-hidden="true">3.1.5.1.</strong> Map Server</a></li><li><a href="software/ros/packages/nav.html"><strong aria-hidden="true">3.1.5.2.</strong> Navigation stack</a></li></ol></li></ol></li><li><a href="software/image-processing.html"><strong aria-hidden="true">3.2.</strong> Image processing</a></li></ol></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -97,7 +81,7 @@
                 
                 <div id="menu-bar" class="menu-bar">
                     <div id="menu-bar-sticky-container">
-                        <div class="left-buttons javascript-only">
+                        <div class="left-buttons">
                             <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                                 <i class="fa fa-bars"></i>
                             </button>
@@ -129,13 +113,15 @@
                 </div>
 
                 
-                <div id="searchbar-outer" class="searchbar-outer">
-                    <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
-                </div>
-                <div id="searchresults-outer" class="searchresults-outer">
-                    <div class="searchresults-header" id="searchresults-header"></div>
-                    <ul id="searchresults">
-                    </ul>
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
                 </div>
                 
 
@@ -151,6 +137,24 @@
                 <div id="content" class="content">
                     <main>
                         <a class="header" href="print.html#introduction" id="introduction"><h1>Introduction</h1></a>
+<p>ROS or Robot Operating Systems is an open source framework designed for designing robots.
+ROS is commonly installed upon a Linux operating system.
+There are different ROS versions:</p>
+<ul>
+<li>Lunar (Latest)</li>
+<li>Kinetic (LTS)</li>
+<li>Jade</li>
+<li>Indigo</li>
+<li>...</li>
+</ul>
+<p>The ROS distribution we're using for Eurobot is the 'Kinetic' versions.</p>
+<p>What's great about ROS, it's that there is an ever growing community that is sharing their code &amp; projects of robotic machines. This is great because there are many build-in/downloadable libraries ready to use and the end user doesn't need to reinvent the wheel for classic robotic manipulations, like for example:</p>
+<ul>
+<li>Drivers to read/write to sensors</li>
+<li>Robotic algorithms (navigation, interpret sensor data, object manipulation)</li>
+<li>...</li>
+</ul>
+<p>In this section we will go over the basic concepts of ROS, the actual installation and the realisation of a project from scratch.</p>
 <a class="header" href="print.html#a1-getting-in-touch-with-fusion360" id="a1-getting-in-touch-with-fusion360"><h1>1. Getting in touch with Fusion360</h1></a>
 <p>Fusion360 is a 3D modeling software used by many professionals and hobbyists to create pieces. You can directly send your models to slicers in order to print them or export the 2D plans to build it your own. The following few chapters should give you a global overview of how Fusion360 works and what you can use it for. We'll try to orient our writing to learn your to design in order to print your models later and will end with some tips about the printing of your designs.</p>
 <p>To complete your learning we strongly recommend you subscribe to <a href="https://www.youtube.com/channel/UCo29kn3d9ziFUZGZ50VKvWA">Lars Christensen's Youtube channel</a>. He's a master in the use of Fusion360 and has very well made videos about every problem of question you might have.</p>
@@ -363,6 +367,135 @@ If we look from the top view, the rollers should all point to the center of the 
 \]
 <a class="header" href="print.html#ball-mechanism" id="ball-mechanism"><h1>Ball mechanism</h1></a>
 <a class="header" href="print.html#ros" id="ros"><h1>ROS</h1></a>
+<a class="header" href="print.html#workspaces" id="workspaces"><h1>Workspaces</h1></a>
+<p>The first thing you will want to do before you write code is create an environnement for your project. This environnement is called <em>Workspace</em>. The Workspace is the root folder containing subfolders and files essential to run your project.
+These files will be generated using the <strong>catkin_init_workspace</strong> command.</p>
+<p>Let's get into it!
+<br><br></p>
+<ul>
+<li>Choose a directory for your workspace, let's use 'catkin_ws'</li>
+</ul>
+<pre><code>mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws/src
+catkin_init_workspace
+</code></pre>
+<p>This will create a <strong>CMakeLists.txt</strong> file in your <strong>/src</strong> folder.
+<br><br></p>
+<ul>
+<li>Then we will make the project</li>
+</ul>
+<pre><code>cd ~/catkin_ws
+catkin_make
+</code></pre>
+<p>This will create two subfolders, <strong>build</strong> and <strong>devel</strong>. The <strong>build</strong> folder is none of our interest in most of the part. The <strong>devel</strong> folder contains a number of files and directories, the most interesting of which are the setup files. Running these configures your system to use this workspace, and the code that’s (going to be) contained inside it.
+<br><br></p>
+<ul>
+<li>Configure your machine to use this Workspace</li>
+</ul>
+<pre><code>source devel/setup.bash
+</code></pre>
+<p>That's it, you've got your workspace up and running!</p>
+<a class="header" href="print.html#ros-packages" id="ros-packages"><h1>ROS Packages</h1></a>
+<p>ROS software is organized into packages, each of which contains some combination of code, data, and documentation. Usually there is a package for each 'function' of your robot. For example, you can have a package for navigation or for sensor capturing.
+Thanks to the contributing community, there are many pre built packages available to download for free.</p>
+<p>Let's create our first package!</p>
+<ul>
+<li>Creating a packages</li>
+</ul>
+<pre><code>cd ~/catkin_ws/src
+catkin_create_pkg my_awesome_code rospy
+</code></pre>
+<p>This creates a new package named <strong>my_awesome_code</strong>. Inside that folder we'll find a <strong>/src</strong> directory where we will put our python code.</p>
+<a class="header" href="print.html#complementary-info" id="complementary-info"><h2>Complementary info</h2></a>
+<a class="header" href="print.html#roscore" id="roscore"><h3>roscore</h3></a>
+<p>The <code>roscore</code> command is a service that provides connection information to nodes so that they can transmit messages to one another. <strong>It is necessary to run this command before launching any package</strong>.</p>
+<a class="header" href="print.html#rosrun" id="rosrun"><h3>rosrun</h3></a>
+<p>To run a package, we use the <code>rosrun</code> command executed like this:</p>
+<pre><code>rosrun PACKAGE EXECUTABLE [ARGS]
+</code></pre>
+<p><strong>PACKAGE</strong> is the name of the created package, for example <strong>my_awesome_code</strong>, and <strong>EXECUTABLE</strong> is the name of the python file containing the code. <strong>Attention!</strong> The python file needs to be executable, juste use <code>sudo chmod +x file.py</code></p>
+<a class="header" href="print.html#publisher-node" id="publisher-node"><h1>Publisher Node</h1></a>
+<p>As shortly mentioned in the basic concept part, ROS allows interaction pulisher nodes and subscriber nodes.
+In this chapter we'll create our first publisher node, which will send a basic message.</p>
+<p>Make sure your current path is the previously created package.</p>
+<a class="header" href="print.html#create-a-python-file" id="create-a-python-file"><h3>Create a python file</h3></a>
+<pre><code>touch talker.py
+</code></pre>
+<a class="header" href="print.html#make-it-executable" id="make-it-executable"><h3>Make it executable</h3></a>
+<pre><code>sudo chmod +x talker.py
+</code></pre>
+<a class="header" href="print.html#add-the-following-code" id="add-the-following-code"><h3>Add the following code</h3></a>
+<pre><code>import rospy
+from std_msgs.msg import String
+
+def talker():
+    pub = rospy.Publisher('chatter', String, queue_size=10)
+    rospy.init_node('talker', anonymous=True)
+    rate = rospy.Rate(10) # 10hz
+    while not rospy.is_shutdown():
+        hello_str = &quot;hello world %s&quot; % rospy.get_time()
+        rospy.loginfo(hello_str)
+        pub.publish(hello_str)
+        rate.sleep()
+
+if __name__ == '__main__':
+    try:
+        talker()
+    except rospy.ROSInterruptException:
+        pass
+</code></pre>
+<p>First we create the publisher node with reference 'chatter' and initialize it.</p>
+<p>Then we go through a loop and create a 'hello world' string that we will publish on this 'talker' node.</p>
+<p><code>rospy.loginfo()</code> is used to debug info to the user but doesn't interact with the node itself.</p>
+<p>We could now run <code>roscore</code> and <code>rosrun my_awesome_code talker</code> in the console and see the debugger info but we don't have anybody subscribed(listening) to that <code>talker</code> node yet.</p>
+<a class="header" href="print.html#subscriber-node" id="subscriber-node"><h1>Subscriber Node</h1></a>
+<p>In this chapter we'll create our first listener node, which will retrieve info from another publishing node.</p>
+<p>Make sure your current path is the previously created package.</p>
+<a class="header" href="print.html#create-a-python-file-1" id="create-a-python-file-1"><h3>Create a python file</h3></a>
+<pre><code>touch listener.py
+</code></pre>
+<a class="header" href="print.html#make-it-executable-1" id="make-it-executable-1"><h3>Make it executable</h3></a>
+<pre><code>sudo chmod +x listener.py
+</code></pre>
+<a class="header" href="print.html#add-the-following-code-1" id="add-the-following-code-1"><h3>Add the following code</h3></a>
+<pre><code>import rospy
+from std_msgs.msg import String
+
+def callback(data):
+    rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
+
+def listener():
+
+    # In ROS, nodes are uniquely named. If two nodes with the same
+    # name are launched, the previous one is kicked off. The
+    # anonymous=True flag means that rospy will choose a unique
+    # name for our 'listener' node so that multiple listeners can
+    # run simultaneously.
+    rospy.init_node('listener', anonymous=True)
+
+    rospy.Subscriber('chatter', String, callback)
+
+    # spin() simply keeps python from exiting until this node is stopped
+    rospy.spin()
+
+if __name__ == '__main__':
+    listener()
+</code></pre>
+<p>First we initialize the <code>listener</code> node and then tell it to subscribe to the previously created <code>chatter</code> node.
+Here we also need to mention what to do with any incoming data from the <code>chatter</code> node. In this case, this function is called <code>callback</code>.</p>
+<p>Now anytime we get incoming data from the subscribed <code>chatter</code> node, the <code>callback</code> function will log the data.</p>
+<p>Note here that we specify the type of the incoming data (String).</p>
+<a class="header" href="print.html#test-if-everything-is-working" id="test-if-everything-is-working"><h3>Test if everything is working</h3></a>
+<pre><code class="language-roscore">rosrun my_awesome_code talker
+rosrun my_awesome_code listener
+
+</code></pre>
+<p>You should now be able to see the following output:</p>
+<pre><code>[INFO] [WallTime: 1439848277.141546] /listener_14364_1439848276913 \ I heard hello world 1439848277.14
+[INFO] [WallTime: 1439848277.241519] /listener_14364_1439848276913 \ I heard hello world 1439848277.24
+[INFO] [WallTime: 1439848277.341668] /listener_14364_1439848276913 \ I heard hello world 1439848277.34
+[INFO] [WallTime: 1439848277.441579] /listener_14364_1439848276913 \ I heard hello world 1439848277.44
+</code></pre>
 <a class="header" href="print.html#ros-and-arduino" id="ros-and-arduino"><h1>ROS and Arduino</h1></a>
 <a class="header" href="print.html#useful-packages" id="useful-packages"><h1>Useful packages</h1></a>
 <a class="header" href="print.html#map-server" id="map-server"><h1>Map Server</h1></a>
@@ -389,20 +522,16 @@ If we look from the top view, the rollers should all point to the center of the 
 
         </div>
 
-
-        <!-- Local fallback for Font Awesome -->
-        <script>
-            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
-                var link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.type = 'text/css';
-                link.href = '_FontAwesome/css/font-awesome.css';
-                document.head.insertBefore(link, document.head.firstChild)
-            }
-        </script>
+        
 
         
 
+        
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                window.print();
+            })
+        </script>
         
 
         
@@ -416,18 +545,11 @@ If we look from the top view, the rollers should all point to the center of the 
         <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
         
 
-        
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                window.print();
-            })
-        </script>
-        
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
 
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
-
-        <!-- Custom JS script -->
+        <!-- Custom JS scripts -->
         
 
     </body>
