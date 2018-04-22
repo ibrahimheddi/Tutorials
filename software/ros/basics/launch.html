@@ -136,7 +136,36 @@
 
                 <div id="content" class="content">
                     <main>
-                        
+                        <a class="header" href="software/ros/basics/launch.html#launch-files" id="launch-files"><h1>Launch files</h1></a>
+<p>Launch files are very common in ROS to both users and developers. They provide a convenient way to start up multiple nodes and a master, as well as other initialization requirements such as setting parameters.</p>
+<a class="header" href="software/ros/basics/launch.html#roslaunch" id="roslaunch"><h2>Roslaunch</h2></a>
+<p><code>roslaunch</code> is used to open launch files. This can be done by either specifying the package the launch files are contained in followed by the name of the launch file, or by specifying the file path to the launch file.</p>
+<pre><code class="language-bash">roslaunch package_name launch_file arg1:=value arg2:=value
+</code></pre>
+<blockquote>
+<p>roslaunch will also start <code>roscore</code> if no master has been set. Pushing <code>Ctrl-C</code> in a terminal with a launch file running will close all nodes that were started with that launch files.</p>
+</blockquote>
+<a class="header" href="software/ros/basics/launch.html#writing-a-launch-files" id="writing-a-launch-files"><h2>Writing a .launch files</h2></a>
+<p>Launch files are of the format .launch and use a specific XML format. They can be placed anywhere within a package directory, but it is common to make a directory named <strong>Launch</strong> inside the workspace directory to organize all your launch files. The contents of a launch file must be contained between a pair of launch tags</p>
+<pre><code class="language-xml">&lt;launch&gt;&lt;!-- Content here --&gt;&lt;/launch&gt;
+</code></pre>
+<p>To actually start a node, the <code>&lt;node&gt;</code> tags are used, the <strong>pkg</strong>, <strong>type</strong> and <strong>name</strong> argument are required.</p>
+<pre><code class="language-xml">&lt;node pkg=&quot;...&quot; type=&quot;...&quot; name=&quot;...&quot; respawn=true/&gt;
+</code></pre>
+<ul>
+<li>
+<p><code>pkg, type and name</code>: The argument <strong>pkg</strong> points to the package associated with the node that is to be launched, while <strong>type</strong> refers to the name of the node executable file.</p>
+</li>
+<li>
+<p><code>respawn or required</code>: However optional, it’s common to either have a respawn argument or a required argument, but not both. If <strong>respawn=true</strong>, then this particular node will be restarted if for some reason it closed. <strong>required=true</strong> will do the opposite, that is, it will shut down all the nodes associated with a launch file if this particular node comes down. There are other optional argument available on the ROS wiki.</p>
+</li>
+<li>
+<p><code>arg</code>: Sometimes it is necessary to use a local variable in launch files. This can be done using</p>
+</li>
+</ul>
+<pre><code class="language-xml">&lt;arg name=&quot;...&quot; value=&quot;...&quot;&gt;
+</code></pre>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

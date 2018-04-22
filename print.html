@@ -423,6 +423,155 @@ If we look from the top view, the rollers should all point to the center of the 
 </li>
 </ul>
 <a class="header" href="print.html#ball-mechanism" id="ball-mechanism"><h1>Ball mechanism</h1></a>
+<a class="header" href="print.html#sonar" id="sonar"><h1>Sonar</h1></a>
+<p>This is a draft of the tutorial, not the last version so all the instructions are not here yet.</p>
+<p>This tutorial explains the code to use and transfer sonar sensors information with ROS.</p>
+<p>For the «Cortex» robot we used four sensors, one on each side so that’s what the final code presented at the end of this tutorial is based on.</p>
+<p>Firstly, in this code we are going to include the same libraries as shown in the Arduino Publisher Tutorial so you can refer to that part for the explanations.
+An additional useful library used for the sensors is the NewPing.h. So here are all the necessary libraries :</p>
+<pre><code>#include &lt;ros.h&gt;
+#include &lt;sensor_msgs/Range.h&gt;
+#include &lt;NewPing.h&gt;
+</code></pre>
+<p>Then you have to define the pins for each sensor. In this case, the ultrasound sensor has two pins (Trigger ans Echo). Here is an exemple with the sensor located on the right of the robot:</p>
+<pre><code>#define TRIGGER_PINR  5
+#define ECHO_PINR    4   
+</code></pre>
+<p>You also have to specify the maximum distance at which you want the sensor to still be able to detect :</p>
+<pre><code>#define MAX_DISTANCE 300
+</code></pre>
+<p>Now as we are using the NewPing library you can simply create an ultrasound sensor object by doing this :</p>
+<pre><code>NewPing sonarR(TRIGGER_PINR, ECHO_PINR, MAX_DISTANCE);
+</code></pre>
+<p>where you specify the pins and the maximum distance defined previously.</p>
+<p>Moreover as mentioned in the Arduino Publisher Tutorial you specify the type of the ultrasound message and the name you want to assign to it :</p>
+<pre><code>sensor_msgs::Range range_msg_right;
+</code></pre>
+<p>You also have to add the following line which has also been explained in the Arduino Publisher Tutorial :</p>
+<pre><code>ros::Publisher pub_range4(&quot;ultrasound_right&quot;, &amp;range_msg_right);
+</code></pre>
+<p>We then have to fill each sonar object with the initialisation information associated :</p>
+<pre><code>range_msg_right.radiation_type = sensor_msgs::Range::ULTRASOUND;
+range_msg_right.header.frame_id =  &quot;ultrasound_right&quot;;
+range_msg_right.field_of_view = 0.3665;  // fake
+range_msg_right.min_range = 0.0;
+range_msg_right.max_range = MAX_DISTANCE;
+</code></pre>
+<p>Now we can add parts to the void loop of the Arduino code. The most important and useful one specifies the distance to an obstacle :</p>
+<pre><code>range_msg_right.range = tmp/100;
+</code></pre>
+<p>We can then publish that information about the distance (you can again refer to the Arduino Publisher Tutorial for the publishing part) :</p>
+<pre><code>pub_range4.publish(&amp;range_msg_right);
+</code></pre>
+<p>Here is the whole code for four ultrasound sensors based on the one presented in this link :
+<a href="https://www.youtube.com/watch?v=gm3e-51ohgQ">https://www.youtube.com/watch?v=gm3e-51ohgQ</a></p>
+<pre><code>#include &lt;ros.h&gt;
+#include &lt;sensor_msgs/Range.h&gt;
+#include &lt;NewPing.h&gt;
+
+#define TRIGGER_PINR  5   //back
+#define ECHO_PINR    4   
+
+#define TRIGGER_PINL  7   //front
+#define ECHO_PINL     6  
+
+#define TRIGGER_PINB  12   //left
+#define ECHO_PINB     13 
+
+#define TRIGGER_PINF  11   //right
+#define ECHO_PINF     10 
+
+#define MAX_DISTANCE 300 // Maximum distance we want to ping  
+
+NewPing sonarL(TRIGGER_PINL, ECHO_PINL, MAX_DISTANCE); // back us 
+NewPing sonarR(TRIGGER_PINR, ECHO_PINR, MAX_DISTANCE); // front us
+NewPing sonarB(TRIGGER_PINB, ECHO_PINB, MAX_DISTANCE); // left us
+NewPing sonarF(TRIGGER_PINF, ECHO_PINF, MAX_DISTANCE); // right us
+
+ros::NodeHandle  nh;
+
+sensor_msgs::Range range_msg_rear;
+sensor_msgs::Range range_msg_front;
+sensor_msgs::Range range_msg_left;
+sensor_msgs::Range range_msg_right;
+ros::Publisher pub_range1(&quot;ultrasound_rear&quot;, &amp;range_msg_rear);
+ros::Publisher pub_range2(&quot;ultrasound_front&quot;, &amp;range_msg_front);
+ros::Publisher pub_range3(&quot;ultrasound_left&quot;, &amp;range_msg_left);
+ros::Publisher pub_range4(&quot;ultrasound_right&quot;, &amp;range_msg_right);
+ 
+
+char frameid[] = &quot;base_link&quot;;
+
+long duration;
+ float tmp;
+
+void setup()
+{
+  nh.initNode();
+  nh.advertise(pub_range1);
+  nh.advertise(pub_range2);
+  nh.advertise(pub_range3);
+  nh.advertise(pub_range4);
+
+  range_msg_rear.radiation_type = sensor_msgs::Range::ULTRASOUND;
+  range_msg_rear.header.frame_id =  &quot;ultrasound_rear&quot;;
+  range_msg_rear.field_of_view = 0.3665;  // fake
+  range_msg_rear.min_range = 0.0;
+  range_msg_rear.max_range = MAX_DISTANCE;
+  
+  range_msg_front.radiation_type = sensor_msgs::Range::ULTRASOUND;
+  range_msg_front.header.frame_id =  &quot;ultrasound_front&quot;;
+  range_msg_front.field_of_view = 0.3665;  // fake
+  range_msg_front.min_range = 0.0;
+  range_msg_front.max_range = MAX_DISTANCE; 
+   
+  range_msg_left.radiation_type = sensor_msgs::Range::ULTRASOUND;
+  range_msg_left.header.frame_id =  &quot;ultrasound_front&quot;;
+  range_msg_left.field_of_view = 0.3665;  // fake
+  range_msg_left.min_range = 0.0;
+  range_msg_left.max_range = MAX_DISTANCE;  
+  
+  range_msg_right.radiation_type = sensor_msgs::Range::ULTRASOUND;
+  range_msg_right.header.frame_id =  &quot;ultrasound_right&quot;;
+  range_msg_right.field_of_view = 0.3665;  // fake
+  range_msg_right.min_range = 0.0;
+  range_msg_right.max_range = MAX_DISTANCE;
+}
+
+long range_time;
+
+void loop()
+{
+  //publish the adc value every 50 milliseconds
+  //since it takes that long for the sensor to stabilize
+  if ( millis() &gt;= range_time ){
+    tmp=sonarL.ping_cm();
+    range_msg_rear.range = tmp/100;
+    range_msg_rear.header.stamp = nh.now();
+    pub_range1.publish(&amp;range_msg_rear);
+
+    tmp=sonarR.ping_cm();
+    range_msg_front.range = tmp/100;
+    range_msg_front.header.stamp = nh.now();
+    pub_range2.publish(&amp;range_msg_front);
+    
+     tmp=sonarB.ping_cm();
+    range_msg_left.range = tmp/100;
+    range_msg_left.header.stamp = nh.now();
+    pub_range2.publish(&amp;range_msg_left);
+
+    tmp=sonarF.ping_cm();
+    range_msg_right.range = tmp/100;
+    range_msg_right.header.stamp = nh.now();
+    pub_range4.publish(&amp;range_msg_right);
+
+    range_time =  millis() + 50;
+  }
+  nh.spinOnce();
+}
+
+
+</code></pre>
 <p>#Serial Peripheral Interface (SPI)</p>
 <blockquote>
 <p><em>last updated on April 22, 2018</em></p>
@@ -676,6 +825,71 @@ CAN.init_Filt(1, 0, 0x05);
 <li>Well documented on Wikipedia, https://en.wikipedia.org/wiki/CAN_bus</li>
 </ul>
 <a class="header" href="print.html#ros" id="ros"><h1>ROS</h1></a>
+<a class="header" href="print.html#ros-1" id="ros-1"><h1>Ros</h1></a>
+<p>ROS starts with the ROS Master. The Master allows all other ROS pieces of software (Nodes) to find and talk to each other. That way, we do not have to ever specifically state “Send this sensor data to that computer at 127.0.0.1. We can simply tell Node 1 to send messages to Node 2. But... how do Nodes do this? By publishing and subscribing to <code>TOPICS</code>.</p>
+<p>The ROS Master provides name registration and lookup to the rest of the Computation Graph.</p>
+<p><img src="http://www.clearpathrobotics.com/assets/guides/ros/_images/ros101one.png" alt="alt text" title="ROS GRAPH" /></p>
+<blockquote>
+<p>This content is based on <a href="https://www.clearpathrobotics.com/">Clearpath Robotics</a> documentation. For further information refer to their <a href="http://www.clearpathrobotics.com/assets/guides/ros/Intro%20to%20the%20Robot%20Operating%20System.html">ROS Tutorials</a>.</p>
+</blockquote>
+<a class="header" href="print.html#nodes" id="nodes"><h1>Nodes</h1></a>
+<p>Nodes are executables that can communicate with other processes using topics,
+services, or the Parameter Server. Using nodes in ROS provides us with fault
+tolerance and separates the code and functionalities, making the system simpler.</p>
+<p>A node must have a unique name in the system. This name is used to permit the
+node to communicate with another node using its name without ambiguity.</p>
+<p>ROS has tools to handle nodes and give us information about it, such as <code>rosnode</code>.</p>
+<p>The rosnode tool is a command-line tool used to display information about nodes,
+such as listing the currently running nodes. The supported commands are as follows:</p>
+<ul>
+<li><code>rosnode info NODE</code>: This prints information about a node</li>
+<li><code>rosnode kill NODE</code>: This kills a running node or sends a given signal</li>
+<li><code>rosnode list</code>: This lists the active nodes</li>
+<li><code>rosnode machine hostname</code>: This lists the nodes running on a particular machine or lists machines</li>
+<li><code>rosnode ping NODE</code>: This tests the connectivity to the node.</li>
+<li><code>rosnode cleanup</code>: This purges the registration information from unreachable nodes</li>
+</ul>
+<a class="header" href="print.html#topics" id="topics"><h1>Topics</h1></a>
+<p>Topics are buses used by nodes to transmit data. Topics can be transmitted without a
+direct connection between nodes, which means that the production and consumption
+of data are decoupled. A topic can have various subscribers and can also have
+various publishers, but you can take care about publishing the same topic with
+different nodes because it can create conflicts.</p>
+<p>Each topic is strongly typed by the ROS message type used to publish it, and nodes
+can only receive messages from a matching type. A node can subscribe to a topic
+only if it has the same message type.</p>
+<p>ROS has a tool to work with topics called <code>rostopic</code>. It is a command-line tool
+that gives us information about the topic or publishes data directly on the network.
+This tool has the following parameters:</p>
+<ul>
+<li><code>rostopic list</code>: This prints information about active topics.</li>
+<li><code>rostopic pub /topic type args</code>: This publishes data to the topic.
+It allows us to create and publish data in whatever topic we want,
+directly from the command line.</li>
+<li><code>rostopic echo /topic</code>: This prints messages to the screen.</li>
+<li><code>rostopic find message_type</code>: This finds topics by their type.</li>
+<li><code>rostopic info /topic</code>: This prints information about the active topic,</li>
+<li><code>rostopic hz /topic</code>: This displays the publishing rate of the topic.
+topics published, ones it is subscribed to, and services.</li>
+<li><code>rostopic type /topic</code>: This prints the topic type, that is, the type of
+message it publishes.</li>
+<li><code>rostopic bw /topic</code>: This displays the bandwidth used by the topic.</li>
+</ul>
+<a class="header" href="print.html#messages" id="messages"><h1>Messages</h1></a>
+<p>A node sends information to another node using messages that are published
+by topics. The message has a simple structure that uses standard types or types
+developed by the user.</p>
+<p>Message types use the following standard ROS naming convention; the name of the
+package, then /, and then the name of the .msg file. For example, <strong>std_msgs/msg/String.msg</strong> has the <strong>std_msgs/String</strong> message type.</p>
+<p>ROS has the <code>rosmsg</code> command-line tool to get information about messages. The
+accepted parameters are as follows:</p>
+<ul>
+<li><code>rosmsg show</code>: This displays the fields of a message</li>
+<li><code>rosmsg list</code>: This lists all messages</li>
+<li><code>rosmsg package</code>: This lists all of the messages in a package</li>
+<li><code>rosmsg packages</code>: This lists all of the packages that have the message</li>
+<li><code>rosmsg users</code>: This searches for code files that use the message type</li>
+</ul>
 <a class="header" href="print.html#workspaces" id="workspaces"><h1>Workspaces</h1></a>
 <p>The first thing you will want to do before you write code is create an environnement for your project. This environnement is called <em>Workspace</em>. The Workspace is the root folder containing subfolders and files essential to run your project.
 These files will be generated using the <strong>catkin_init_workspace</strong> command.</p>
@@ -805,6 +1019,86 @@ rosrun my_awesome_code listener
 [INFO] [WallTime: 1439848277.341668] /listener_14364_1439848276913 \ I heard hello world 1439848277.34
 [INFO] [WallTime: 1439848277.441579] /listener_14364_1439848276913 \ I heard hello world 1439848277.44
 </code></pre>
+<a class="header" href="print.html#launch-files" id="launch-files"><h1>Launch files</h1></a>
+<p>Launch files are very common in ROS to both users and developers. They provide a convenient way to start up multiple nodes and a master, as well as other initialization requirements such as setting parameters.</p>
+<a class="header" href="print.html#roslaunch" id="roslaunch"><h2>Roslaunch</h2></a>
+<p><code>roslaunch</code> is used to open launch files. This can be done by either specifying the package the launch files are contained in followed by the name of the launch file, or by specifying the file path to the launch file.</p>
+<pre><code class="language-bash">roslaunch package_name launch_file arg1:=value arg2:=value
+</code></pre>
+<blockquote>
+<p>roslaunch will also start <code>roscore</code> if no master has been set. Pushing <code>Ctrl-C</code> in a terminal with a launch file running will close all nodes that were started with that launch files.</p>
+</blockquote>
+<a class="header" href="print.html#writing-a-launch-files" id="writing-a-launch-files"><h2>Writing a .launch files</h2></a>
+<p>Launch files are of the format .launch and use a specific XML format. They can be placed anywhere within a package directory, but it is common to make a directory named <strong>Launch</strong> inside the workspace directory to organize all your launch files. The contents of a launch file must be contained between a pair of launch tags</p>
+<pre><code class="language-xml">&lt;launch&gt;&lt;!-- Content here --&gt;&lt;/launch&gt;
+</code></pre>
+<p>To actually start a node, the <code>&lt;node&gt;</code> tags are used, the <strong>pkg</strong>, <strong>type</strong> and <strong>name</strong> argument are required.</p>
+<pre><code class="language-xml">&lt;node pkg=&quot;...&quot; type=&quot;...&quot; name=&quot;...&quot; respawn=true/&gt;
+</code></pre>
+<ul>
+<li>
+<p><code>pkg, type and name</code>: The argument <strong>pkg</strong> points to the package associated with the node that is to be launched, while <strong>type</strong> refers to the name of the node executable file.</p>
+</li>
+<li>
+<p><code>respawn or required</code>: However optional, it’s common to either have a respawn argument or a required argument, but not both. If <strong>respawn=true</strong>, then this particular node will be restarted if for some reason it closed. <strong>required=true</strong> will do the opposite, that is, it will shut down all the nodes associated with a launch file if this particular node comes down. There are other optional argument available on the ROS wiki.</p>
+</li>
+<li>
+<p><code>arg</code>: Sometimes it is necessary to use a local variable in launch files. This can be done using</p>
+</li>
+</ul>
+<pre><code class="language-xml">&lt;arg name=&quot;...&quot; value=&quot;...&quot;&gt;
+</code></pre>
+<a class="header" href="print.html#parameter-server" id="parameter-server"><h1>Parameter server</h1></a>
+<p>Configuration information in ROS is usually saved to the Parameter server. The Parameter sever is a collection of values that can be accessed upon request through the command prompt, nodes or launch files. Parameters are intended to be fairly static, globally available values such as integers, floats, strings or bool values.</p>
+<a class="header" href="print.html#parameters" id="parameters"><h2>Parameters</h2></a>
+<p>Parameters are named using the normal ROS naming convention. This means that ROS parameters have a hierarchy that matches the namespaces used for topics and nodes. This hierarchy is meant to protect parameter names from colliding.</p>
+<pre><code>/motors/front/left: 5.0
+/motors/front/right: 4.0
+/motors/rear/left: 4.0
+/motors/rear/right: 5.0
+</code></pre>
+<p>The parameter <code>/motors/front/left</code> has the value <code>5.0</code>. You can also get the value for <code>/motors/front</code>, which is the dictionary</p>
+<pre><code>left: 5.0
+right: 4.0
+</code></pre>
+<p>And you can also get the value for <code>/motors</code>, which has a dictionary of dictionaries representation of the parameter tree:</p>
+<pre><code>front: { left: 5.0, right: 4.0 }
+rear: { left: 4.0, right: 5.0 }
+</code></pre>
+<a class="header" href="print.html#parameters-from-the-terminal" id="parameters-from-the-terminal"><h2>Parameters from the terminal</h2></a>
+<p>ROS has a tool called <code>rosparam</code> to manage Parameter Server. The accepted parameters are as follows:</p>
+<ul>
+<li><code>rosparam set parameter value</code>: This sets the parameter</li>
+<li><code>rosparam get parameter</code>: This gets the parameter</li>
+<li><code>rosparam load file</code>: This loads parameters from the file</li>
+<li><code>rosparam dump file</code>: This dumps parameters to the file</li>
+<li><code>rosparam delete parameter</code>: This deletes the parameter</li>
+<li><code>rosparam list</code>: This lists the parameter names</li>
+</ul>
+<p>For example, we can see the parameters in the server that are used by all nodes:</p>
+<pre><code class="language-bash">rosparam list
+</code></pre>
+<p>We obtain the following output for the above example:</p>
+<pre><code class="language-bash">/motors/front/left
+/motors/front/right
+/motors/rear/left
+/motors/rear/right
+</code></pre>
+<p>If you want to read a value, you will use the <code>get</code> parameter:</p>
+<pre><code>rosparam get /motors/front/left
+</code></pre>
+<p>To set a new value, you will use the <code>set</code> parameter:</p>
+<pre><code>rosparam set /motors/front/left 6.0
+</code></pre>
+<a class="header" href="print.html#accessing-parameters-from-nodes" id="accessing-parameters-from-nodes"><h2>Accessing parameters from nodes</h2></a>
+<p>It is often the case that your nodes will have to access the parameter server during start up to retrieve configuration information, or set a parameter value. This can be done quite easily in Python, to set a parameter use:</p>
+<pre><code class="language-python">rospy.param_set(/motors/front/left, 6.0)
+rospy.param_get(/motors/front/left)
+</code></pre>
+<a class="header" href="print.html#accessing-parameters-from-launchfiles" id="accessing-parameters-from-launchfiles"><h2>Accessing parameters from launchfiles</h2></a>
+<p>The final source where you may need to access the parameter server is from a launch file. Setting a parameter value during a launch file is common practice to conveniently initialize parameters on start up. This can be done in your launch file using</p>
+<pre><code class="language-yaml">&lt;param name=&quot;/motors/front/left&quot; value=&quot;6.0&quot;/&gt;
+</code></pre>
 <a class="header" href="print.html#ros-and-arduino" id="ros-and-arduino"><h1>ROS and Arduino</h1></a>
 <a class="header" href="print.html#useful-packages" id="useful-packages"><h1>Useful packages</h1></a>
 <a class="header" href="print.html#map-server" id="map-server"><h1>Map Server</h1></a>
@@ -931,7 +1225,7 @@ Note : xmin is the left side of the square, xmax is the right side of the square
 <li>Change the color range in the code (color_detection.py) and save the file (<strong><em>ctrl+x</em></strong>)
 <img src="../img/software/image-processing/image4.png" alt="z" /></li>
 </ul>
-<a class="header" href="print.html#ros-1" id="ros-1"><h5>ROS</h5></a>
+<a class="header" href="print.html#ros-2" id="ros-2"><h5>ROS</h5></a>
 <p>You use <strong><em>ROS</em></strong> to send the color combination to another robot module :</p>
 <ul>
 <li>Open terminal and launch ROS :</li>

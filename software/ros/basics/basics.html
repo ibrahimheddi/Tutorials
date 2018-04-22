@@ -136,7 +136,72 @@
 
                 <div id="content" class="content">
                     <main>
-                        
+                        <a class="header" href="software/ros/basics/basics.html#ros" id="ros"><h1>Ros</h1></a>
+<p>ROS starts with the ROS Master. The Master allows all other ROS pieces of software (Nodes) to find and talk to each other. That way, we do not have to ever specifically state “Send this sensor data to that computer at 127.0.0.1. We can simply tell Node 1 to send messages to Node 2. But... how do Nodes do this? By publishing and subscribing to <code>TOPICS</code>.</p>
+<p>The ROS Master provides name registration and lookup to the rest of the Computation Graph.</p>
+<p><img src="http://www.clearpathrobotics.com/assets/guides/ros/_images/ros101one.png" alt="alt text" title="ROS GRAPH" /></p>
+<blockquote>
+<p>This content is based on <a href="https://www.clearpathrobotics.com/">Clearpath Robotics</a> documentation. For further information refer to their <a href="http://www.clearpathrobotics.com/assets/guides/ros/Intro%20to%20the%20Robot%20Operating%20System.html">ROS Tutorials</a>.</p>
+</blockquote>
+<a class="header" href="software/ros/basics/basics.html#nodes" id="nodes"><h1>Nodes</h1></a>
+<p>Nodes are executables that can communicate with other processes using topics,
+services, or the Parameter Server. Using nodes in ROS provides us with fault
+tolerance and separates the code and functionalities, making the system simpler.</p>
+<p>A node must have a unique name in the system. This name is used to permit the
+node to communicate with another node using its name without ambiguity.</p>
+<p>ROS has tools to handle nodes and give us information about it, such as <code>rosnode</code>.</p>
+<p>The rosnode tool is a command-line tool used to display information about nodes,
+such as listing the currently running nodes. The supported commands are as follows:</p>
+<ul>
+<li><code>rosnode info NODE</code>: This prints information about a node</li>
+<li><code>rosnode kill NODE</code>: This kills a running node or sends a given signal</li>
+<li><code>rosnode list</code>: This lists the active nodes</li>
+<li><code>rosnode machine hostname</code>: This lists the nodes running on a particular machine or lists machines</li>
+<li><code>rosnode ping NODE</code>: This tests the connectivity to the node.</li>
+<li><code>rosnode cleanup</code>: This purges the registration information from unreachable nodes</li>
+</ul>
+<a class="header" href="software/ros/basics/basics.html#topics" id="topics"><h1>Topics</h1></a>
+<p>Topics are buses used by nodes to transmit data. Topics can be transmitted without a
+direct connection between nodes, which means that the production and consumption
+of data are decoupled. A topic can have various subscribers and can also have
+various publishers, but you can take care about publishing the same topic with
+different nodes because it can create conflicts.</p>
+<p>Each topic is strongly typed by the ROS message type used to publish it, and nodes
+can only receive messages from a matching type. A node can subscribe to a topic
+only if it has the same message type.</p>
+<p>ROS has a tool to work with topics called <code>rostopic</code>. It is a command-line tool
+that gives us information about the topic or publishes data directly on the network.
+This tool has the following parameters:</p>
+<ul>
+<li><code>rostopic list</code>: This prints information about active topics.</li>
+<li><code>rostopic pub /topic type args</code>: This publishes data to the topic.
+It allows us to create and publish data in whatever topic we want,
+directly from the command line.</li>
+<li><code>rostopic echo /topic</code>: This prints messages to the screen.</li>
+<li><code>rostopic find message_type</code>: This finds topics by their type.</li>
+<li><code>rostopic info /topic</code>: This prints information about the active topic,</li>
+<li><code>rostopic hz /topic</code>: This displays the publishing rate of the topic.
+topics published, ones it is subscribed to, and services.</li>
+<li><code>rostopic type /topic</code>: This prints the topic type, that is, the type of
+message it publishes.</li>
+<li><code>rostopic bw /topic</code>: This displays the bandwidth used by the topic.</li>
+</ul>
+<a class="header" href="software/ros/basics/basics.html#messages" id="messages"><h1>Messages</h1></a>
+<p>A node sends information to another node using messages that are published
+by topics. The message has a simple structure that uses standard types or types
+developed by the user.</p>
+<p>Message types use the following standard ROS naming convention; the name of the
+package, then /, and then the name of the .msg file. For example, <strong>std_msgs/msg/String.msg</strong> has the <strong>std_msgs/String</strong> message type.</p>
+<p>ROS has the <code>rosmsg</code> command-line tool to get information about messages. The
+accepted parameters are as follows:</p>
+<ul>
+<li><code>rosmsg show</code>: This displays the fields of a message</li>
+<li><code>rosmsg list</code>: This lists all messages</li>
+<li><code>rosmsg package</code>: This lists all of the messages in a package</li>
+<li><code>rosmsg packages</code>: This lists all of the packages that have the message</li>
+<li><code>rosmsg users</code>: This searches for code files that use the message type</li>
+</ul>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

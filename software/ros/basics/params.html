@@ -136,7 +136,58 @@
 
                 <div id="content" class="content">
                     <main>
-                        
+                        <a class="header" href="software/ros/basics/params.html#parameter-server" id="parameter-server"><h1>Parameter server</h1></a>
+<p>Configuration information in ROS is usually saved to the Parameter server. The Parameter sever is a collection of values that can be accessed upon request through the command prompt, nodes or launch files. Parameters are intended to be fairly static, globally available values such as integers, floats, strings or bool values.</p>
+<a class="header" href="software/ros/basics/params.html#parameters" id="parameters"><h2>Parameters</h2></a>
+<p>Parameters are named using the normal ROS naming convention. This means that ROS parameters have a hierarchy that matches the namespaces used for topics and nodes. This hierarchy is meant to protect parameter names from colliding.</p>
+<pre><code>/motors/front/left: 5.0
+/motors/front/right: 4.0
+/motors/rear/left: 4.0
+/motors/rear/right: 5.0
+</code></pre>
+<p>The parameter <code>/motors/front/left</code> has the value <code>5.0</code>. You can also get the value for <code>/motors/front</code>, which is the dictionary</p>
+<pre><code>left: 5.0
+right: 4.0
+</code></pre>
+<p>And you can also get the value for <code>/motors</code>, which has a dictionary of dictionaries representation of the parameter tree:</p>
+<pre><code>front: { left: 5.0, right: 4.0 }
+rear: { left: 4.0, right: 5.0 }
+</code></pre>
+<a class="header" href="software/ros/basics/params.html#parameters-from-the-terminal" id="parameters-from-the-terminal"><h2>Parameters from the terminal</h2></a>
+<p>ROS has a tool called <code>rosparam</code> to manage Parameter Server. The accepted parameters are as follows:</p>
+<ul>
+<li><code>rosparam set parameter value</code>: This sets the parameter</li>
+<li><code>rosparam get parameter</code>: This gets the parameter</li>
+<li><code>rosparam load file</code>: This loads parameters from the file</li>
+<li><code>rosparam dump file</code>: This dumps parameters to the file</li>
+<li><code>rosparam delete parameter</code>: This deletes the parameter</li>
+<li><code>rosparam list</code>: This lists the parameter names</li>
+</ul>
+<p>For example, we can see the parameters in the server that are used by all nodes:</p>
+<pre><code class="language-bash">rosparam list
+</code></pre>
+<p>We obtain the following output for the above example:</p>
+<pre><code class="language-bash">/motors/front/left
+/motors/front/right
+/motors/rear/left
+/motors/rear/right
+</code></pre>
+<p>If you want to read a value, you will use the <code>get</code> parameter:</p>
+<pre><code>rosparam get /motors/front/left
+</code></pre>
+<p>To set a new value, you will use the <code>set</code> parameter:</p>
+<pre><code>rosparam set /motors/front/left 6.0
+</code></pre>
+<a class="header" href="software/ros/basics/params.html#accessing-parameters-from-nodes" id="accessing-parameters-from-nodes"><h2>Accessing parameters from nodes</h2></a>
+<p>It is often the case that your nodes will have to access the parameter server during start up to retrieve configuration information, or set a parameter value. This can be done quite easily in Python, to set a parameter use:</p>
+<pre><code class="language-python">rospy.param_set(/motors/front/left, 6.0)
+rospy.param_get(/motors/front/left)
+</code></pre>
+<a class="header" href="software/ros/basics/params.html#accessing-parameters-from-launchfiles" id="accessing-parameters-from-launchfiles"><h2>Accessing parameters from launchfiles</h2></a>
+<p>The final source where you may need to access the parameter server is from a launch file. Setting a parameter value during a launch file is common practice to conveniently initialize parameters on start up. This can be done in your launch file using</p>
+<pre><code class="language-yaml">&lt;param name=&quot;/motors/front/left&quot; value=&quot;6.0&quot;/&gt;
+</code></pre>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
