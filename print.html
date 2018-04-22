@@ -156,7 +156,7 @@ There are different ROS versions:</p>
 </ul>
 <p>In this section we will go over the basic concepts of ROS, the actual installation and the realisation of a project from scratch.</p>
 <a class="header" href="print.html#graphic-chart" id="graphic-chart"><h1>Graphic chart</h1></a>
-<p><img src="./graphic_chart.PNG" alt="alt text" /></p>
+<p><img src="graphic/graphic_chart.PNG" alt="alt text" /></p>
 <a class="header" href="print.html#colors" id="colors"><h2>Colors</h2></a>
 <p>The used colors in HEX format :</p>
 <ul>
@@ -384,7 +384,7 @@ If we look from the top view, the rollers should all point to the center of the 
     \end{bmatrix}
 \]
 <a class="header" href="print.html#the-big-robot-specifications" id="the-big-robot-specifications"><h1>The big robot specifications</h1></a>
-<p><img src="./bigrobot_render.PNG" alt="alt text" /></p>
+<p><img src="mechanical/2018/bigrobot_render.PNG" alt="alt text" /></p>
 <a class="header" href="print.html#fusion-360" id="fusion-360"><h2>Fusion 360</h2></a>
 <p>The entire robot is designed in Fusion 360 and is available on the Eurobot cloud. The final version is called <strong>SHARK FINAL V17</strong></p>
 <a class="header" href="print.html#parts" id="parts"><h2>Parts</h2></a>
@@ -410,7 +410,7 @@ If we look from the top view, the rollers should all point to the center of the 
 <li>
 <p><strong>Lift transmission</strong></p>
 <ul>
-<li><em>Pitch (distance between tooths)</em> : 2.032 mm</li>
+<li><em>Pitch (distance between teeth)</em> : 2.032 mm</li>
 <li><em>Pulley</em> : aluminium, Glass Filled PC Timing Belt Pulley, 6mm Belt Width x 2.032mm Pitch, 36 Tooth, Maximum Bore Dia. 5mm</li>
 <li><em>Timing belt</em> : RS Pro, Timing Belt, 315 Tooth, 640.08mm Length X 6mm Width</li>
 </ul>
@@ -563,21 +563,21 @@ switch (mySPI.command) {
 <a class="header" href="print.html#why-using-canbus-on-the-robots-and-how-to-implement-it" id="why-using-canbus-on-the-robots-and-how-to-implement-it"><h1>Why using CANBus on the robots and how to implement it</h1></a>
 <a class="header" href="print.html#issues-and-context-of-the-eurobot--2018-" id="issues-and-context-of-the-eurobot--2018-"><h2>Issues and context of the Eurobot ( 2018 )</h2></a>
 <p>Many technologies have been implemented on the robots for the 2018 edition of the EUROBOT.</p>
-<p>Those technologies where where huge step forward in terms of quality, speed and ease of use.</p>
+<p>Those technologies were a huge step forward in terms of quality, speed and ease of use.</p>
 <p>However, unexpected downsides appeared during the implementation of the technologies on the robots.</p>
 <p>Thoses downsides are of all type but those who are speaking about during this tutorial are *<em>electronic</em> and <strong>space</strong>.</p>
-<p><img src="./CAN_SRC/complex-wiring.png" alt="alt text" title="Logo Title Text 1" /></p>
+<p><img src="electronics/communication/CAN_SRC/complex-wiring.png" alt="alt text" title="Logo Title Text 1" /></p>
 <a class="header" href="print.html#electronic-problem" id="electronic-problem"><h3>Electronic problem</h3></a>
-<p>Once the board are installend on the robots, they needed a lot of connections between them. The last picture remembers the kind of resul we got after connecting all the wires.</p>
-<p>From that moment it is very complex to add or remove wires because.</p>
-<p>It is also very complex for the debugging because it is hard to make measure and to find where the error is.</p>
+<p>Once the boards are installend on the robots, they needed a lot of connections between them. The last picture shows the kind of result we got after connecting all the wires.</p>
+<p>From that moment it is very complex to add or remove wires because of the big amount of cables.</p>
+<p>It is also very complex for the debugging because it is hard to take measures and to find where the error is.</p>
 <a class="header" href="print.html#space-problem" id="space-problem"><h3>Space problem</h3></a>
-<p>Another problem wich appeared and thaht couldn't have been expected is the huge space token by the wires.</p>
-<p>During the conception the <strong>mistake</strong> we did is to disregard the size of the wires. It should be in the futur by taking some leeway on the size of the robot during the conception.</p>
+<p>Another problem wich appeared and that we didn't is the huge space taken by the wires.</p>
+<p>During the conception the <strong>mistake</strong> we did is to disregard the size of the wires. In the future, some leeway should be taken on the size of the robot during the conception.</p>
 <p>The huge number of wires had also an mechanical impact. It added constraint on the connexions wich often broke.</p>
 <a class="header" href="print.html#le-canbus" id="le-canbus"><h2>Le CANBus</h2></a>
 <a class="header" href="print.html#context" id="context"><h3>Context</h3></a>
-<p>Those problem have already been meet many years ago in the automotive. Indeed, more and more electronic devises where used in the cars for differents purposes :</p>
+<p>Those problems have already been met many years ago in the automotive. Indeed, more and more electronic devises were used in the cars for differents purposes :</p>
 <ul>
 <li>Engine temperature, air...</li>
 <li>RPM, speed...</li>
@@ -593,55 +593,53 @@ switch (mySPI.command) {
 <li>Error detection, fast recovery and repair ( stil in real time)</li>
 <li>Security and stability</li>
 <li>Priorization of transmission</li>
-<li>Based on a differiental signal, the CANBus is made for harsh environnements (External noises and fault tolerance</li>
-<li>It uses a twisted pair cable wich limit the noise emition</li>
+<li>Based on a differiental signal, the CANBus is made for harsh environnements (External noises and fault tolerance)</li>
+<li>It uses a twisted pair cable wich limits the noise emition</li>
 </ul>
 <p>You can see below the speed transmission according to the distances</p>
-<p><img src="./CAN_SRC/can_speed.PNG" alt="alt text" /></p>
+<p><img src="electronics/communication/CAN_SRC/can_speed.PNG" alt="alt text" /></p>
 <a class="header" href="print.html#topology" id="topology"><h4>Topology</h4></a>
-<p>Finally, the biggest benefit of the CANBus is his one bus line topology which limit the number of cable to 4. (CAN HIGH, CAN LOW, VCC and GROUND).</p>
+<p>Finally, the biggest benefit of the CANBus is his one bus line topology which limits the number of cables to 4. (CAN HIGH, CAN LOW, VCC and GROUND).</p>
 <p>This the reason why it is used on every modern car.</p>
-<p><img src="./CAN_SRC/can_topology.png" alt="alt text" /></p>
+<p><img src="electronics/communication/CAN_SRC/can_topology.png" alt="alt text" /></p>
 <p>We can see on the last figure a system without the CANBus (left) and a system with the CANBus (right).</p>
 <p>Every component, called a node, is connected to the bus line like the figure below :</p>
-<p><img src="./CAN_SRC/can_busnode.jpg" alt="alt text" /></p>
-<p>By analogy, the CANBus can be represented by a numbers of people ( the nodes ) in a room ( the bus line ) where everybody screams his informations. Everyelse has the choice to listen or not. A priority system choose who is going to speak when several people want to sepak at the same time.</p>
+<p><img src="electronics/communication/CAN_SRC/can_busnode.jpg" alt="alt text" /></p>
+<p>By analogy, the CANBus can be represented by a number of people ( the nodes ) in a room ( the bus line ) where everybody screams his informations. Everyelse has the choice to listen or not. A priority system chooses who is going to speak when several people want to speak at the same time.</p>
 <a class="header" href="print.html#the-frame" id="the-frame"><h3>The frame</h3></a>
-<p><img src="./CAN_SRC/can_frame.jpg" alt="alt text" /></p>
+<p><img src="electronics/communication/CAN_SRC/can_frame.jpg" alt="alt text" /></p>
 <p>A data frame is made of different parts :</p>
 <ul>
 <li>1 dominant bit begins the frame</li>
 <li>The ID of the message is made of 11 bits in the standart CAN or 29 bits in the extended CAN.</li>
-<li>6 bits wich determine the lenght of the frame</li>
+<li>6 bits which determine the lenght of the frame</li>
 <li>The data made of 0...8 bytes</li>
 <li>15 bits of CRC to detect errors</li>
 <li>ACK</li>
 <li>End of frame bit</li>
 </ul>
 <a class="header" href="print.html#priority-of-transmission" id="priority-of-transmission"><h3>Priority of transmission</h3></a>
-<p>Lorsque plusieurs noeud veulent communiquer en même temps sur le Bus, c'est le champ d'arbitrage qui va déterminer la priorité. Elle sera donné au premier noeud présentant un bit dominant (0) alors que les autres noeuds présentent un bit récessif.</p>
-<p>When differents nodes whant to talk at the same time on the bus line, it is the ID wich is going to determine the priority.</p>
-<p>It gives an important advantage to CANBus, it is possible to make priority of transmission by choosing the right ID. For example, in car the brake is system is more important than the light system. The ID of the brake system will be lower ( more 0 ) than the light system.</p>
+<p>When differents nodes whant to talk at the same time on the bus line, it is the ID who is going to determine the priority.</p>
+<p>It gives an important advantage to CANBus, it is possible to make priority of transmission by choosing the right ID. For example, in car the brake system is more important than the light system. The ID of the brake system will be lower ( more 0 ) than the light system.</p>
 <a class="header" href="print.html#implementation" id="implementation"><h2>Implementation</h2></a>
 <a class="header" href="print.html#hardware" id="hardware"><h3>Hardware</h3></a>
-<p><img src="./CAN_SRC/can_hardware.png" alt="alt text" /></p>
+<p><img src="electronics/communication/CAN_SRC/can_hardware.png" alt="alt text" /></p>
 <p>The last figure shows the implementation of the CANBus. The implementation is quite easy because of the modules proposed by Microchip.</p>
 <p>A node is made of a transceiver, a CAN controller and a microcontroller.</p>
 <a class="header" href="print.html#transceiver" id="transceiver"><h4>Transceiver</h4></a>
-<p>Microchip propose un grand nombre de solutions pour l'automobile. Parmi celles-ci un transceiver.</p>
-<p>Microchip proposes a huge numbers of solutions for the automotive including a transceiver.</p>
-<p>It is the MCP2562. Formerly the MCP2551, it is used to convert the TTL signal to a differential signal required by the CANBus.</p>
+<p>Microchip proposes a lot of solutions for the automotive including a transceiver.</p>
+<p>It is the MCP2562. Formerly the MCP2551, is used to convert the TTL signal to a differential signal required by the CANBus.</p>
 <a class="header" href="print.html#controller" id="controller"><h4>Controller</h4></a>
-<p>Microchip also proposes the CAN controller MCP2515 wich implements all the CAN 2.0 specifications. It is able to send and receive data and communicate it via SPI to a microcontroller.</p>
+<p>Microchip also proposes the CAN controller MCP2515 which implements all the CAN 2.0 specifications. It is able to send and receive data and communicate it via SPI to a microcontroller.</p>
 <a class="header" href="print.html#microcontroller" id="microcontroller"><h4>Microcontroller.</h4></a>
-<p>Any microcontroller with a integrated SPI communication can be selected.</p>
-<p>For example we can take the famous ATMEGA328p know for his arduino IDE.</p>
+<p>Any microcontroller with an integrated SPI communication can be selected.</p>
+<p>For example we can take the famous ATMEGA328p known for his arduino IDE.</p>
 <a class="header" href="print.html#resistance" id="resistance"><h4>Resistance</h4></a>
 <p>In every communication wire there is some reflexion that can corrupt the data. It can be avoided by using 120 Ohm resistor at the end of line.</p>
 <a class="header" href="print.html#pcb" id="pcb"><h4>PCB</h4></a>
 <p>Coming soon.</p>
 <a class="header" href="print.html#software-arduino" id="software-arduino"><h3>Software (Arduino)</h3></a>
-<p>There are many libraries that proposes functions to interract with the CAN controller via SPI from the micrcontroller.</p>
+<p>There are many libraries that propose functions to interract with the CAN controller via SPI from the micrcontroller.</p>
 <p>A very comlete and up to date library is the Seed studio lib :
 <a href="https://github.com/Seeed-Studio/CAN_BUS_Shield">https://github.com/Seeed-Studio/CAN_BUS_Shield</a></p>
 <a class="header" href="print.html#filters" id="filters"><h4>Filters</h4></a>
@@ -650,7 +648,7 @@ switch (mySPI.command) {
 <pre><code class="language-javascript">CAN.init_Filt(0, 0, 0x04);                          
 CAN.init_Filt(1, 0, 0x05);                          
 </code></pre>
-<p>This code means that the CAN controller will only lister the the messages with an ID of 0x04 and 0x05.</p>
+<p>This code means that the CAN controller will only listen to the messages with an ID of 0x04 and 0x05.</p>
 <a class="header" href="print.html#masks" id="masks"><h4>Masks</h4></a>
 <p>The masks defines the bits that will be inspected to filter the coming ID. If the bit of the mask is 1, it means that the ID has to respect the bit of the filter.</p>
 <p>For example with the following filter :</p>
