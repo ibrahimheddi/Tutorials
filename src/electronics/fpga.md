@@ -1,15 +1,27 @@
 # FPGA #
  
 ## 1 INTRODUCTION ## 
-The protocol that we will use is called Serial Peripheral Interface (SPI). It is a synchronous full-duplex serial interface and is commonly used to communicate with on-board peripherals such as EEPROM, FLASH memory, A/D converters, temperature sensors, or in our case a Field Programmable Gate Array (FPGA).
-We assume a working knowledge of the VHDL hardware description language. 
+The protocol that we will use is called Serial Peripheral Interface (SPI)  commonly used to send data between microcontrollers and small peripherals such as shift registers,EEPROM, FLASH memory, A/D converters, temperature sensors, or in our case a Field Programmable Gate Array (FPGA).
+We will program with  the VHDL  hardware description language.
+if you are not able to program  with this language you can use this link to  start : https://tcuvelier.developpez.com/tutoriels/vhdl/introduction-langage/
+
+
 
 ## 2 HARDWARE ## 
-SPI is a protocol, in which one device (the master) controls one or more other devices (the slaves). For the master we use an open-source microcontroller prototyping platform, such as the Arduino 101 or a modified Arduino UNO R3. In this document we use Arduino to refer to either platform.
-The slave can be a low-cost FPGA prototyping platforms, such as the Xilinx Spartan-6 Avnet LX9 or the Altera Cyclone-IV Terasic DE10-Lite . The repository  includes project files and pin assignments for both these boards. The code is written in VHDL and should work equally well on more powerful boards.
+SPI is a protocol, in which one device (the master) controls one or more other devices (the slaves). For the master we use an open-source microcontroller prototyping platform, like  Arduino UNO R3.
+The slave can be a low-cost FPGA prototyping platforms, such as  the Altera Cyclone-IV Terasic DE10-Lite . The repository  includes project files and pin assignments for both these boards. The code is written in VHDL 
+FPGAs consist of a matrix of programmable logic blocks surrounded by programmable output input blocks. The whole is connected by a programmable interconnection network.
+#### FPGA ####
+FPGAs are distinct from other programmable circuit families while offering the highest level of logical integration.
+There are 4 main categories available commercially:
+Symmetrical table.
+In column.
+Seas of doors.
+Hierarchical PLDs.
+
 
 ### 2.1.Voltage levels ### 
-It is very important that the I/O voltage levels of the devices match. Both FPGA boards support 3.3V levels, and are a good match for the Arduino 101. However, the Arduino UNO uses the traditional 5 Volt TTL levels. Instead of using a level shifter, such as the 74LVC245, we opt for converting the Arduino to 3.3V according to Adafruit’s instructions. Running a 16 MHz clock at 3.3V is out of spec. Is said to work, but should really program the fuses to get the frequency down to abt. 13 MHz .
+It is very important to choose the right  I/O voltage levels of the devices match. Both FPGA boards support 3.3V levels, and are a good match for the Arduino 101. besides , the Arduino UNO uses the traditional 5 Volt TTL levels. Instead of using a level shifter we convert  the Arduino to 3.3V according to Adafruit’s instructions. 
 
 ### 2.2.Signals ### 
 The SPI interface is a 4 wire interface. The bus consists of 3 signals plus *a slave select* signal for each device.
@@ -35,66 +47,73 @@ Once the Arduino runs at 3.3V, connecting the two devices becomes trivial.
       
 ## 3. BYTE – PROTOCOL ## 
 
-With the two devices physically connected, we need a protocol to transfer data. We chose the Serial Peripheral Interface (SPI), a lightweight protocol to connect one master to one or more slaves.
+With the two circuits  physically connected, we must have  a protocol to transfer data. We chose the Serial Peripheral Interface (SPI)  to connect one master to one or more slaves.
 
 ### 3.1 Master/slave ### 
-The SPI bus is controlled by a master device (typically a microcontroller) that orchestrates the bus access. The master generates the control signals and regulates the data flow. The illustration below shows a master with three slaves. The master uses the Slave Select (SS) signal to select the slave.
+The SPI bus is controlled by a master that orchestrates the bus access. The master generates the control signals and regulates the data flow. The illustration below shows a master with three slaves. The master uses the Slave Select (SS) signal to select the slave.
  
 ![z](img/electronics/fpga/image3.png)
 
+
 ### 3.2 Parameters ###
-SPI is also a protocol with many degrees of freedom. It is important that the master and slave agree on the voltage levels and maximum clock frequency. The SPI clock polarity (CPOL) and clock phase (CPHA) introduce four more degrees of freedom as shown in the table below.
+SPI is also a protocol that provide us much  degrees of freedom. It is significant  that the master and slave must be in harmony on the voltage levels and maximum clock frequency. The SPI  clock phase (CPHA) and clock polarity (CPOL) present  four more degrees of freedom as shown in the table below.
 SPI parameters
 
 ![z](img/electronics/fpga/image4.png)
 
-For this article we assume *mode 3*, where the clock is high when idle; data is driving following the falling edge of the clock and latched on the rising edge.
+For this level ,  we work with  *mode 3*, where the clock is high when idle ;  data is follow  the falling edge of the clock and latched on the rising edge.
+### 3.3. Slave select ###
+To more understand , we should  comprise the impact of the *slave select* (*SS**) signal that is used to address the slave devices.
+ 
+ ![z](img/electronics/fpga/image6.png)
 
-### 3.3. Operation ###
+Slaves can only drive their output (*MISO*) line when *SS** is active, also they should tri-stated the output. The protocol can be out of order  into the following steps:
+
+1.	 The master starts the communication by activating SS*
+
+*  The slave reply by starting to drive its MISO output.
++	Meantime the master drives its MOSI output.
+
+2.	 The master makes SCLK low.
+
++ On this falling edge, the master and slave drive their most important bit position (b7) on respectively their MOSI and MISO outputs.
+
+3.	 The master makes SCLK high.
+
++ On this rising edge, the master and slave clock the input from their respectively MISO and MOSI inputs into the least important bit position (b0).
+
+4.	 return to step 2. Until the least significant bit position (b0) has been sent.
+
+5.	 When all bits are transmitted, the master will deactivate SS*.
+
+### 3.4. Operation ###
 The protocol is easiest explained with shift registers as shown in the illustration below. The master generates the SPI Clock (*SCLK*) to initiate the information exchange. Data is shifted on one edge of this clock and is sampled on the opposite edge when the data is stable.
 
  ![z](img/electronics/fpga/image5.png)
 
-In mode 3, at the falling edge of *SCLK*, both devices drive their most significant bit (*b7*) on their outgoing data line. On the rising edge, both devices clock in this bit into the least significant bit position (*b0*). After eight *SCLK* cycles, the master and slave have exchanged their values and each device processes the data received (e.g. writing it to memory). In case there is more data to be exchanged, the registers are loaded with new data and the process repeats itself. Once all data is transmitted, the master stops the *SCLK* clock.
+In mode 3, at the falling edge of *SCLK*, in first step ,both devices drive their most significant bit (*b7*) on their outgoing data line. On the rising edge, both devices clock in this bit into the least significant bit position (*b0*). After eight *SCLK* cycles, the master and slave have exchanged completely their values and each device processes the data received (e.g. writing it to memory). when there is more data to be exchanged, the registers are loaded with new data and the process repeats itself. Once all data is transmitted, the master stops the *SCLK* clock.
+so :
+1. The master outputs the clock signal.
+2. The master switches the SS/CS pin to a low voltage state, which activates the slave.
+3. The master sends the data one bit at a time to the slave along the MOSI line. The slave reads the bits as they are received.
+4. If a response is needed, the slave returns data one bit at a time to the master along the MISO line. The master reads the bits as they are received.
 
-### 3.4. Slave select ###
-For a more complete picture, we need to include the effect of the *slave select* (*SS**) signal that is used to address the slave devices.
- 
- ![z](img/electronics/fpga/image6.png)
 
-Slaves may only drive their output (*MISO*) line when *SS** is active, otherwise they should tri-stated the output. The protocol can be broken down into the following steps:
-
-1.	 The master initiates the communication by activating SS*
-
-*  The slave responds by starting to drive its MISO output.
-+	Meanwhile the master drives its MOSI output.
-
-2.	 The master makes SCLK low.
-
-+ On this falling edge, the master and slave drive their most significant bit position (b7) on respectively their MOSI and MISO outputs.
-
-3.	 The master makes SCLK high.
-
-+ On this rising edge, the master and slave clock the input from their respectively MISO and MOSI inputs into the least significant bit position (b0).
-
-4.	 Go back to step 2. Until the least significant bit position (b0) has been sent.
-
-5.	 When all bits are transmitted, the master deactivates SS*.
 
 ## 4. BYTES EXCHANGE WITH ARDUINO AS MASTER ##
-The Arduino is blessed with a support library for the serial peripheral interface. This greatly aids the implementation. For the slave we used an Altera or Xilinx based FPGA implementation . Refer to the first part of this article for details about the physical connection. 
+The Arduino is based on a  support library for the serial peripheral interface. This make  the implementation more easy . For the slave we used an Altera  implementation . 
 
 ## 5. BYTE EXCHANGE WITH A FPGA AS SLAVE ##
 Implementing the SPI Slave on an FPGA is like old school digital electronics. My key takeaway is to think hardware, not programming. Implementing the [SPI protocol](https://coertvonk.com/hw/logic/connecting-fpga-and-arduino-using-spi-13067/3) on a FPGA is fairly straightforward for as long as we use a directly clocked sequential circuit while preventing clock domain crossings.
 
 ### 5.1. Sequential circuit ### 
-In real life, two signals going to a single gate will not arrive there at the same time due to wire delays. This causes the output to momentarily have an incorrect value. The problem compounds as the signal travels through more gates and wires.
+virtually, two signals going to a single gate will not arrive there at the same time because the wire delays. This causes the output to for a few moment have an incorrect value. The problem compounds as the signal travels through more gates and wires,so more delays.
 
-In Building Math Hardware we created elementary math operations using combinatorial circuits. That was OK, because we didn’t care about such output *glitches* caused by the input signals propagating to the outputs. From a demonstrator’s point of view it even made it more interesting. Talking to a real device, such as a SPI master is different, because it requires the outputs to be stable at certain times.
+In Building Math Hardware we created elementary math operations using combinatorial circuits. That was OK, because we didn’t care about such output *glitches* caused by the input signals propagating to the outputs. From a demonstrator’s point of view it even made it more interesting. but with SPI master is different, because it requires the outputs to be stable at certain times.
  
  ![z](img/electronics/fpga/image7.png)
 
-The solution is to introduce a clock signal, and store the signals in a flip-flop (registers) at the rising edge of that clock signal. We then only need to ensure that the longest delay from one flip-flop to the next is less that the clock period. This greatly simplifies the design process, at the cost of introducing some delay.
+The solution is to introduce a clock signal, and store the signals in a flip-flop, DFF ,(registers) at the rising edge of that clock signal. We then only need to ensure that the longest delay from one flip-flop to the next is less that the clock period. This greatly simplifies the design process, at the cost of introducing some delay.and like this we synchronize the two signal
 
 ### 5.2. Clock domain ###
 Field programmable gate arrays thrive on synchronous designs, but they don’t do well with clock signals that are asynchronous with its system clock.
